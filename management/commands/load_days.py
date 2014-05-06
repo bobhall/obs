@@ -18,11 +18,16 @@ class Command(BaseCommand):
 
         for line in reader:
 
-            print line
-            
             date = datetime.strptime(line[0], '%m-%d-%Y')
             time_of_day = line[1].strip()
             condition = line[2].strip()
+
+            
+            if not date or not time_of_day or not condition:
+                print "Skipping: ", line
+            else:
+                print line
+                
 
             try:
                 day = Day.objects.get(date=date)
