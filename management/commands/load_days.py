@@ -18,6 +18,9 @@ class Command(BaseCommand):
 
         for line in reader:
 
+            if len(line) == 0:
+                continue
+
             date = datetime.strptime(line[0], '%m-%d-%Y')
             time_of_day = line[1].strip()
             condition = line[2].strip()
