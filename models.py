@@ -4,7 +4,6 @@ from django.db.models import Q
 class DayManager(models.Manager):
     def num_wet_commutes(self):
         return sum([d.num_wets() for d in self.filter()])
-#        return self.filter(morning='W').count() + self.filter(evening='W').count()
 
     def num_dry_commutes(self):
         return self.filter(morning='D').count() + self.filter(evening='D').count()
@@ -15,9 +14,9 @@ class DayManager(models.Manager):
         return float(double_wets.count()) / (double_wets.count() + morning_wets.count())
 
     def chance_of_rain(self):
-        wet_rides = sum([day.num_wets() for day in self.all()])
-        total_rides = self.all().count() * 2
-        return float(wet_rides) / total_rides
+        wet = self.num_wet_commutes()
+        dry = self.num_dry_commutes()
+        return float(wet) / (wet+dry)
 
     def chance_of_dry(self):        
         return 1.0 - self.chance_of_rain()
@@ -37,4 +36,5 @@ class Day(models.Model):
 
 
     objects = DayManager()
+    
     
